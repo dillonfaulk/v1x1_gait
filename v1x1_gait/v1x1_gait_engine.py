@@ -146,7 +146,7 @@ class LegGait(Node):
                 raise RuntimeError("Joint name " + jn + " not found in per-leg chain; available: " + str(self.chain_link_names))
 
         self.joint_signs = [1.0] * len(self.mapped_indices)
-        self.timer = self.create_timer(0.001, self.step)
+        self.timer = self.create_timer(0.01, self.step)
     # NEW: subscriber callback
     def rotation_callback(self, msg):
         self.rotation_angle = msg.data
@@ -168,7 +168,7 @@ class LegGait(Node):
             target_position=rotated_target,
             target_orientation=[[0.0,0.0,0.0],
                                 [0.0,0.0,0.0],
-                                [0.0,0.0,0.0000001]],
+                                [0.0,0.0,0.0]],
             orientation_mode="all"
         )
 
@@ -223,30 +223,30 @@ def main():
     urdf_path = "/home/n3z-laptop/ros2_ws/src/v1x1_description/urdf/v1x1.urdf.xacro"
     rear_gait = {
         "front": -0.04,         # was 0.0
-        "back": 0.34,            # was 0.28
+        "back": 0.3,            # was 0.28
         "step_height": 0.04,
         "x_lat": 0.35,          # was 0.35
         "x_swing": 0.02,
-        "stance_ratio": 0.6,
-        "points": 10
+        "stance_ratio": 0.5,
+        "points": 16
     }
     front_gait = {
-        "front": 0.34,           # was 0.3
+        "front": 0.3,           # was 0.3
         "back": -0.04,
         "step_height": 0.04,
         "x_lat": 0.35,          # was 0.35
         "x_swing": 0.02,
-        "stance_ratio": 0.6,
-        "points": 10
+        "stance_ratio": 0.5,
+        "points": 16
     }
     #TR_left = LegGait("rear_left_leg", urdf_path, "leg1_joint1", "leg1_ee_link", ["leg1_joint1","leg1_joint2","leg1_joint3","leg1_ee_joint"], "ee_path_left", (1.0,1.0,0.0,1.0), "L", phase_offset=0, gait_params=rear_gait)
     #TR_right = LegGait("rear_right_leg", urdf_path, "leg2_joint1", "leg2_ee_link", ["leg2_joint1","leg2_joint2","leg2_joint3","leg2_ee_joint"], "ee_path_right", (0.0,0.0,1.0,1.0), "R", phase_offset=45, gait_params=rear_gait)
     #TR_FWDleft = LegGait("front_left_leg", urdf_path, "leg3_joint1", "leg3_ee_link", ["leg3_joint1","leg3_joint2","leg3_joint3","leg3_ee_joint"], "ee_path_fwd_left", (1.0,1.0,0.0,1.0), "L", phase_offset=45, gait_params=front_gait)
     #TR_FWDright = LegGait("front_right_leg", urdf_path, "leg4_joint1", "leg4_ee_link", ["leg4_joint1","leg4_joint2","leg4_joint3","leg4_ee_joint"], "ee_path_fwd_right", (0.0,0.0,1.0,1.0), "R", phase_offset=0, gait_params=front_gait)
     V1X1_left = LegGait("rear_left_leg", urdf_path, "leg1_joint1", "leg1_ee_link", ["leg1_joint1","leg1_joint2","leg1_joint3","leg1_joint4","leg1_ee_joint"], "ee_path_left", (1.0,1.0,0.0,1.0), "L", phase_offset=0, gait_params=rear_gait)
-    V1X1_right = LegGait("rear_right_leg", urdf_path, "leg2_joint1", "leg2_ee_link", ["leg2_joint1","leg2_joint2","leg2_joint3","leg2_joint4","leg2_ee_joint"], "ee_path_right", (0.0,0.0,1.0,1.0), "R", phase_offset=45, gait_params=rear_gait)
-    V1X1_FWDleft = LegGait("front_left_leg", urdf_path, "leg3_joint1", "leg3_ee_link", ["leg3_joint1","leg3_joint2","leg3_joint3","leg3_joint4","leg3_ee_joint"], "ee_path_fwd_left", (1.0,1.0,0.0,1.0), "L", phase_offset=45, gait_params=front_gait)
-    V1X1_FWDright = LegGait("front_right_leg", urdf_path, "leg4_joint1", "leg4_ee_link", ["leg4_joint1","leg4_joint2","leg4_joint3","leg4_joint4","leg4_ee_joint"], "ee_path_fwd_right", (0.0,0.0,1.0,1.0), "R", phase_offset=0, gait_params=front_gait)   
+    V1X1_right = LegGait("rear_right_leg", urdf_path, "leg2_joint1", "leg2_ee_link", ["leg2_joint1","leg2_joint2","leg2_joint3","leg2_joint4","leg2_ee_joint"], "ee_path_right", (0.0,0.0,1.0,1.0), "R", phase_offset=90, gait_params=rear_gait)
+    V1X1_FWDleft = LegGait("front_left_leg", urdf_path, "leg3_joint1", "leg3_ee_link", ["leg3_joint1","leg3_joint2","leg3_joint3","leg3_joint4","leg3_ee_joint"], "ee_path_fwd_left", (1.0,1.0,0.0,1.0), "L", phase_offset=135, gait_params=front_gait)
+    V1X1_FWDright = LegGait("front_right_leg", urdf_path, "leg4_joint1", "leg4_ee_link", ["leg4_joint1","leg4_joint2","leg4_joint3","leg4_joint4","leg4_ee_joint"], "ee_path_fwd_right", (0.0,0.0,1.0,1.0), "R", phase_offset=45, gait_params=front_gait)   
     try:
         executor = rclpy.executors.SingleThreadedExecutor()
         #executor.add_node(TR_left)
